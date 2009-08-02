@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -69,8 +69,6 @@ has 'bg' => (
 
 Convert raw IRC formatting to HTML
 
-Perhaps a little code snippet.
-
     use IRC::Formatting::HTML;
 
     ...
@@ -81,8 +79,10 @@ Perhaps a little code snippet.
 
 =head1 METHODS
 
-=head2 function1
+=head2 formatted_string_to_html
 IRC::Formatting::HTML->formatted_string_to_html($irctext)
+
+Takes an irc formatted string and returns the HTML version
 =cut
 
 sub _parse_formatted_string {
@@ -231,6 +231,7 @@ L<http://search.cpan.org/dist/IRC-Formatting-HTML/>
 
 
 =head1 ACKNOWLEDGEMENTS
+This is a direct port of Sam Stephenson's ruby version.
 
 
 =head1 COPYRIGHT & LICENSE
