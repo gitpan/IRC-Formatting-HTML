@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -74,7 +74,7 @@ Convert raw IRC formatting to HTML
     ...
 
     my $irctext = "\002\0031,2Iron & Wine";
-    my $html = IRC::Formatting::HTML->formatted_string_to_html();
+    my $html = IRC::Formatting::HTML->formatted_string_to_html($irctext);
     print $html # prints <span style="font-weight: bold;color: #000; background-color: #008">Iron &amp; Wine</span>
 
 =head1 METHODS
@@ -152,7 +152,7 @@ sub _extract_colors_from {
     return undef, undef;
   }
   else {
-    return $fg, $bg || $self->bg;
+    return $fg, $bg;
   }
 }
 

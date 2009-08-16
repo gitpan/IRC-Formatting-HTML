@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.02    09/16/2009
+        Fixed rendering bug for inverted text (thanks nop)
+
 0.02    08/02/2009
         Cleaned up POD
 
