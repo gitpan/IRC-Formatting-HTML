@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -80,6 +80,7 @@ Convert raw IRC formatting to HTML
 =head1 METHODS
 
 =head2 formatted_string_to_html
+
 IRC::Formatting::HTML->formatted_string_to_html($irctext)
 
 Takes an irc formatted string and returns the HTML version
@@ -150,6 +151,9 @@ sub _extract_colors_from {
   my ($fg, $bg) = ($format_sequence =~ /$COLOR_SEQUENCE/);
   if (! defined $fg) {
     return undef, undef;
+  }
+  elsif (! defined $bg) {
+    return $fg, $self->bg;
   }
   else {
     return $fg, $bg;
