@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -75,7 +75,10 @@ Convert raw IRC formatting to HTML
 
     my $irctext = "\002\0031,2Iron & Wine";
     my $html = IRC::Formatting::HTML->formatted_string_to_html($irctext);
-    print $html # prints <span style="font-weight: bold;color: #000; background-color: #008">Iron &amp; Wine</span>
+    print $html
+
+    # the above will print:
+    # <span style="font-weight: bold;color: #000; background-color: #008">Iron &amp; Wine</span>
 
 =head1 METHODS
 
@@ -193,7 +196,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 AUTHOR
 
-Lee Aylward, C<< <lee at laylward.com> >>
+Lee Aylward, E<lt>leedo@cpan.orgE<gt>
 
 =head1 BUGS
 
@@ -235,6 +238,7 @@ L<http://search.cpan.org/dist/IRC-Formatting-HTML/>
 
 
 =head1 ACKNOWLEDGEMENTS
+
 This is a direct port of Sam Stephenson's ruby version.
 
 
