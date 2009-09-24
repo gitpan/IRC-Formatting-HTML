@@ -1,9 +1,8 @@
 Changes
-IRC-Formatting-HTML-0.05.tar.gz
 lib/IRC/Formatting/HTML.pm
 Makefile.PL
-MANIFEST
-META.yml			Module meta-data (added by MakeMaker)
+MANIFEST			This list of files
+META.yml
 README
 t/00-load.t
 t/01-output.t

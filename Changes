@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.06    09/24/2009
+        Only replace regular spaces with HTML entities
+
 0.05    08/21/2009
         More POD cleanup
 
