@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
