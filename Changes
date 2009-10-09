@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.08    10/09/2009
+        Properly apply the last patch
+
 0.07    10/08/2009
         Put the &#160; entity after a space, so links don't
         get broken when followed by a double space
