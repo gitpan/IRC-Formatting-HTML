@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               IRC-Formatting-HTML
-version:            0.08
+version:            0.09
 abstract:           Convert raw IRC formatting to HTML
 author:
     - Lee Aylward <lee@laylward.com>
@@ -8,16 +8,18 @@ license:            perl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
+    Any::Moose:       0
     HTML::Entities:   0
     List::MoreUtils:  0
-    Moose:            0
     Test::More:       0
 no_index:
     directory:
         - t
         - inc
-generated_by:       ExtUtils::MakeMaker version 6.48
+generated_by:       ExtUtils::MakeMaker version 6.54
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4

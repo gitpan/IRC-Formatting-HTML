@@ -13,7 +13,7 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
-        'Moose' => 0,
+        'Any::Moose' => 0,
         'List::MoreUtils' => 0,
         'HTML::Entities' => 0,
     },

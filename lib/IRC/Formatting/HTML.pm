@@ -3,7 +3,7 @@ package IRC::Formatting::HTML;
 use warnings;
 use strict;
 
-use Moose;
+use Any::Moose;
 use List::MoreUtils qw/natatime/;
 use HTML::Entities;
 
@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";

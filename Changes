@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.09    12/06/2009
+        Use Any::Moose
+
 0.08    10/09/2009
         Properly apply the last patch
 
