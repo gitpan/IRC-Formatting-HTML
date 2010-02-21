@@ -3,8 +3,8 @@ package IRC::Formatting::HTML;
 use warnings;
 use strict;
 
+use IO::String;
 use Any::Moose;
-use List::MoreUtils qw/natatime/;
 use HTML::Entities;
 
 =head1 NAME
@@ -13,11 +13,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -92,11 +92,13 @@ Takes an irc formatted string and returns the HTML version
 sub _parse_formatted_string {
   my $line = shift;
   my @segments;
-  my $it = natatime 2, ("", split(/$FORMAT_SEQUENCE/, $line));
+  my @chunks = ("", split(/$FORMAT_SEQUENCE/, $line));
   my $formatting = IRC::Formatting::HTML->new;
-  while (my ($format_sequence, $text) = $it->()) {
+  while (scalar(@chunks)) {
+    my $format_sequence = shift(@chunks);
+    my $text = shift(@chunks);
     my $new_formatting = $formatting->_accumulate($format_sequence);
-    push @segments, [ $new_formatting, $text];
+    push @segments, [$new_formatting, $text];
   }
   return @segments;
 }
@@ -167,8 +169,8 @@ sub _css_styles {
   my $self = shift;
   my ($fg, $bg) = $self->i ? ($self->bg || 0, $self->fg || 1) : ($self->fg, $self->bg);
   my $styles = {};
-  $styles->{'color'} = '#'.$COLORS[$fg] if defined $fg;
-  $styles->{'background-color'} = '#'.$COLORS[$bg] if defined $bg;
+  $styles->{'color'} = '#'.$COLORS[$fg] if defined $fg and $COLORS[$fg];
+  $styles->{'background-color'} = '#'.$COLORS[$bg] if defined $bg and $COLORS[$bg];
   $styles->{'font-weight'} = 'bold' if $self->b;
   $styles->{'text-decoration'} = 'underline' if $self->u;
   return $styles;
