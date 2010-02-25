@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.13    02/24/2010
+        Remove HTML::Entities dependency
+
 0.12    02/21/2010
         Remove leftover IO::String use statement
 

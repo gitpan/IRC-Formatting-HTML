@@ -4,7 +4,6 @@ use warnings;
 use strict;
 
 use Any::Moose;
-use HTML::Entities;
 
 =head1 NAME
 
@@ -12,11 +11,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.12
+Version 0.13
 
 =cut
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -36,32 +35,14 @@ my $FORMAT_SEQUENCE   = qr/(
 my @COLORS = ( qw/fff 000 008 080 f00 800 808 f80
          ff0 0f0 088 0ff 00f f0f 888 ccc/ );
 
-has 'b' => (
+has [qw/b i u/] => (
   is => 'rw',
   isa => 'Bool',
   default => 0,
 );
 
-has 'i' => (
+has [qw/fg bg/] => (
   is => 'rw',
-  isa => 'Bool',
-  default => 0,
-);
-
-has 'u' => (
-  is => 'rw',
-  isa => 'Bool',
-  default => 0,
-);
-
-has 'fg' => (
-  is => 'rw',
-  isa => 'Any',
-);
-
-has 'bg' => (
-  is => 'rw',
-  isa => 'Any',
 );
 
 =head1 SYNOPSIS
@@ -182,7 +163,7 @@ sub formatted_string_to_html {
     my @formatted_line = _parse_formatted_string($_);
     my $line;
     for (@formatted_line) {
-      my $text = encode_entities($_->[1], '<>&"');
+      my $text = _encode_entities($_->[1]);
       if (defined $text and length $text) {
         $text =~ s/ {2}/ &#160;/g;
         $line .= '<span style="'.$_->[0]->_to_css.'">'.$text.'</span>'; 
@@ -191,6 +172,15 @@ sub formatted_string_to_html {
     push @lines, $line if length $line;
   }
   return join "\n", @lines;
+}
+
+sub _encode_entities {
+  my $string = shift;
+  $string =~ s/&/&amp;/g;
+  $string =~ s/</&lt;/g;
+  $string =~ s/>/&gt;/g;
+  $string =~ s/"/&quot;/g;
+  return $string;
 }
 
 __PACKAGE__->meta->make_immutable;
