@@ -1,5 +1,8 @@
 Revision history for IRC-Formatting-HTML
 
+0.14    03/24/2010
+        Handle "0" and "" properly
+
 0.13    02/24/2010
         Remove HTML::Entities dependency
 
