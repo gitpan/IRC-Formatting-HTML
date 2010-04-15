@@ -11,11 +11,11 @@ IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
@@ -161,10 +161,10 @@ sub formatted_string_to_html {
   my @lines;
   for (split "\n", $string) {
     my @formatted_line = _parse_formatted_string($_);
-    my $line;
+    my $line = "";
     for (@formatted_line) {
       my $text = _encode_entities($_->[1]);
-      if (length $text) {
+      if (defined $text and length $text) {
         $text =~ s/ {2}/ &#160;/g;
         $line .= '<span style="'.$_->[0]->_to_css.'">'.$text.'</span>'; 
       }
