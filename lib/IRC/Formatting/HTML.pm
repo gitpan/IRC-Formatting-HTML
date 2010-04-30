@@ -3,20 +3,24 @@ package IRC::Formatting::HTML;
 use warnings;
 use strict;
 
+use Exporter 'import';
+
 =head1 NAME
 
 IRC::Formatting::HTML - Convert raw IRC formatting to HTML
 
 =head1 VERSION
 
-Version 0.17
+Version 0.18
 
 =cut
 
-our $VERSION = '0.17';
+our @EXPORT_OK = qw/irc_to_html/;
+our $VERSION = '0.18';
 
 my $BOLD      = "\002",
 my $COLOR     = "\003";
+my $COLORM    = qr/^$COLOR/;
 my $RESET     = "\017";
 my $INVERSE   = "\026";
 my $UNDERLINE = "\037";
@@ -39,22 +43,22 @@ my ($b, $i, $u, $fg, $bg);
 
 Convert raw IRC formatting to HTML
 
-    use IRC::Formatting::HTML;
+    use IRC::Formatting::HTML qw/irc_to_html/;
 
     ...
 
     my $irctext = "\002\0031,2Iron & Wine";
-    my $html = IRC::Formatting::HTML->formatted_string_to_html($irctext);
+    my $html = irc_to_html($irctext);
     print $html
 
     # the above will print:
     # <span style="font-weight: bold;color: #000; background-color: #008">Iron &amp; Wine</span>
 
-=head1 METHODS
+=head1 FUNCTIONS
 
-=head2 formatted_string_to_html
+=head2 irc_to_html
 
-IRC::Formatting::HTML->formatted_string_to_html($irctext)
+irc_to_html($irctext)
 
 Takes an irc formatted string and returns the HTML version
 =cut
@@ -63,14 +67,13 @@ sub _parse_formatted_string {
   my $line = shift;
   _reset();
   my @segments;
-  my @chunks = ("", split(/$FORMAT_SEQUENCE/, $line));
+  my @chunks = ("", split($FORMAT_SEQUENCE, $line));
   $line = "";
   while (scalar(@chunks)) {
     my $format_sequence = shift(@chunks);
     my $text = shift(@chunks);
     next unless defined $text and length $text;
     _accumulate($format_sequence);
-    $text = _encode_entities($text);
     $text =~ s/ {2}/ &#160;/g;
     $line .= "<span style=\""._to_css()."\">$text</span>"; 
   }
@@ -86,19 +89,19 @@ sub _reset {
 
 sub _accumulate {
   my $format_sequence = shift;
-  if ($format_sequence =~ /$BOLD/) {
+  if ($format_sequence eq $BOLD) {
     $b = !$b;
   }
-  elsif ($format_sequence =~ /$UNDERLINE/) {
+  elsif ($format_sequence eq $UNDERLINE) {
     $u = !$u;
   }
-  elsif ($format_sequence =~ /$INVERSE/) {
+  elsif ($format_sequence eq $INVERSE) {
     $i = !$i;
   }
-  elsif ($format_sequence =~ /$RESET/) {
+  elsif ($format_sequence eq $RESET) {
     _reset;
   }
-  elsif ($format_sequence =~ /$COLOR/) {
+  elsif ($format_sequence =~ $COLORM) {
     ($fg, $bg) = _extract_colors_from($format_sequence);
   }
 }
@@ -115,7 +118,7 @@ sub _to_css {
 sub _extract_colors_from {
   my $format_sequence = shift;
   $format_sequence = substr($format_sequence, 1);
-  my ($_fg, $_bg) = ($format_sequence =~ /$COLOR_SEQUENCE/);
+  my ($_fg, $_bg) = ($format_sequence =~ $COLOR_SEQUENCE);
   if (! defined $_fg) {
     return undef, undef;
   }
@@ -137,11 +140,16 @@ sub _css_styles {
   return $styles;
 }
 
+sub irc_to_html {
+  my $string = shift;
+  return __PACKAGE__->formatted_string_to_html($string);
+}
+
 sub formatted_string_to_html {
   my ($class, $string) = @_;
   join "\n",
        map {_parse_formatted_string($_)}
-       split "\n", $string;
+       split "\n", _encode_entities($string);
 }
 
 sub _encode_entities {
