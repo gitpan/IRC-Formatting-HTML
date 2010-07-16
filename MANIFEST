@@ -10,4 +10,5 @@ t/00-load.t
 t/01-output.t
 t/02-empty.t
 t/03-input.t
+t/04-common.t
 META.yml                                 Module meta-data (added by MakeMaker)
