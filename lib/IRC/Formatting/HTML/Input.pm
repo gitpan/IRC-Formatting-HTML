@@ -22,6 +22,7 @@ sub parse {
   $html =~ s/\n//;
   $p->parse($html);
   $p->eof;
+  $irctext =~ s/\n{2,}/\n/;
   $irctext =~ s/^\n+//;
   $irctext =~ s/\n+$//;
   return $irctext;
@@ -69,6 +70,7 @@ sub _tag_start {
       if ($color) {
         $state->{fg} = $color;
         $irctext .= $COLOR.$color;
+        $irctext .=",$state->{bg}" if length $state->{bg};
       }
     }
     if ($attr->{style} =~ /font-weight:\s*bold/) {
@@ -87,9 +89,18 @@ sub _tag_start {
       my $color = IRC::Formatting::HTML::Common::html_color_to_irc($1);
       if ($color) {
         $state->{bg} = $color;
-        $irctext .= $COLOR.$color;
+        my $fg = length $state->{fg} ? $state->{fg} : "01";
+        $irctext .= $COLOR."$fg,$color";
       }
+    }
+  }
 
+  if ($attr->{color}) {
+    my $color = IRC::Formatting::HTML::Common::html_color_to_irc($attr->{color});
+    if ($color) {
+      $state->{fg} = $color;
+      $irctext .= $COLOR.$color;
+      $irctext .=",$state->{bg}" if length $state->{bg};
     }
   }
 
@@ -113,15 +124,30 @@ sub _tag_end {
   my $prev = shift @states;
   my $next = $states[0];
 
-  if ($tag eq "p" or $tag eq "div" or $tag =~ /^h[\dr]$/) {
-    $irctext .= "\n";
-  }
-
   $irctext .= $BOLD if $next->{b} ne $prev->{b};
   $irctext .= $INVERSE if $next->{i} ne $prev->{i};
   $irctext .= $UNDERLINE if $next->{u} ne $prev->{u};
-  $irctext .= $COLOR.$next->{fg} if $next->{fg} ne $prev->{fg};
-  $irctext .= $COLOR.$next->{bg} if $next->{bg} ne $prev->{bg};
+
+  if ($next->{fg} ne $prev->{fg} or $next->{bg} ne $prev->{bg}) {
+    $irctext .= $COLOR;
+
+    my ($fg, $bg) = ("","");
+    
+    if (length $next->{fg}) {
+      $fg = $next->{fg};
+    }
+    if (length $next->{bg}) {
+      $bg = $next->{bg};
+      $fg = "01" unless length $fg;
+    }
+
+    $irctext .= $fg;
+    $irctext .= ",$bg" if length $bg;
+  }
+
+  if ($tag eq "p" or $tag eq "div" or $tag =~ /^h[\dr]$/) {
+    $irctext .= "\n";
+  }
 }
 
 1

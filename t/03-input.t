@@ -48,8 +48,25 @@ my $big_color = '<span class="Apple-style-span" style="color: rgb(51, 51, 51); f
 $irc = html_to_irc($big_color);
 is $irc, $COLOR."01".$BOLD.$COLOR."07Ars Technica Features:".$COLOR."01Browse our latest in-depth, full-length stories.$BOLD$COLOR";
 
+my $h2_newline = "<h2>Headline</h2>\n<p>what the what</p>";
+$irc = html_to_irc($h2_newline);
+is $irc, $BOLD."Headline".$BOLD."\nwhat the what";
+
+my $fonttag = '<FONT COLOR="#FF0000">t</FONT><FONT COLOR="#FFff00">e</FONT><FONT COLOR="#00ff00">s</FONT><FONT COLOR="#00ffff">t</FONT>';
+$irc = html_to_irc($fonttag);
+is $irc, $COLOR."04t".$COLOR.$COLOR."08e".$COLOR.$COLOR."09s".$COLOR.$COLOR."11t".$COLOR;
+
 my $false_char = "0 hello";
 $irc = html_to_irc($false_char);
 is ($irc, "0 hello");
+
+my $bgcolor = '<span style="background-color: rgb(255, 246, 169);">started following</span>';
+$irc = html_to_irc($bgcolor);
+is $irc, $COLOR."01,15started following".$COLOR;
+
+my $fg_bg_color = '<span style="color: #fff"><span style="background-color: rgb(255, 246, 169);">started following</span></span>';
+$irc = html_to_irc($fg_bg_color);
+is $irc, $COLOR."00".$COLOR."00,15started following".$COLOR."00".$COLOR;
+
 
 done_testing();
