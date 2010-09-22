@@ -14,12 +14,12 @@ IRC::Formatting::HTML - Convert between HTML and IRC formatting
 
 =head1 VERSION
 
-Version 0.27
+Version 0.28
 
 =cut
 
 our @EXPORT_OK = qw/irc_to_html html_to_irc/;
-our $VERSION = '0.27';
+our $VERSION = '0.28';
 
 =head1 SYNOPSIS
 
@@ -58,7 +58,8 @@ to treat inverted text as italic text.
 sub irc_to_html {
   my ($text, %options) = @_;
   my $italic = ($options{invert} and $options{invert} eq "italic");
-  return IRC::Formatting::HTML::Output::parse($text, $italic);
+  my $classes = $options{classes};
+  return IRC::Formatting::HTML::Output::parse($text, $italic, $classes);
 }
 
 =head2 html_to_irc

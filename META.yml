@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               IRC-Formatting-HTML
-version:            0.27
+version:            0.28
 abstract:           Convert between HTML and IRC formatting
 author:
     - Lee Aylward <lee@laylward.com>

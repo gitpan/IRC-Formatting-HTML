@@ -1,5 +1,9 @@
 Revision history for IRC-Formatting-HTML
 
+0.28    09/21/2010
+        Added an option to use CSS classes instead
+        of inline CSS styles
+
 0.27    07/28/2010
         Added an option to treat inverted irc text as
         italic
